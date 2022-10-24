@@ -1,7 +1,7 @@
 FILE=report
 ARCHIVE_PATH=archive
 
-$(FILE).pdf: $(FILE).tex $(FILE).aux $(FILE).toc $(FILE).bbl 
+$(FILE).pdf: $(FILE).tex $(FILE).aux $(FILE).toc $(FILE).bbl
 	pdflatex -interaction=batchmode -shell-escape $(FILE).tex
 	pdflatex -interaction=batchmode -shell-escape $(FILE).tex
 
