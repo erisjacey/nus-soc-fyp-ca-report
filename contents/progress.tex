@@ -1,6 +1,53 @@
 \chapter{Progress Made So Far}
-REPLACE WITH ACTUAL CONTENTS.
+We have made significant progress in the two areas mentioned in Chapter 1 (Introduction).
 
-\section{Preliminary Design/Investigation}
+\section{Implementation of Refactoring Rules}
 
-\section{Design/Investigation Alternatives}
+This reference paper~\cite{hu2019re} features a set of 16 refactoring rules divided into 5 categories.
+We have implemented them in the back-end
+\texttt{nus-se/its-baseline} repository,
+which has been developed in Java.
+
+The high-level design of the subcomponent responsible for this (aptly named \texttt{its-refactoring})
+involves each refactoring rule (implemented as a Java sub-class of the \texttt{RefactoringRule} interface)
+taking in a program in the form of the ITS' version of an abstract syntax tree, and return the refactored
+program as output, provided refactoring can be done.
+
+A summary of the rules and their respective implementing Java classes can be found
+\href{https://docs.google.com/document/d/1MnEVEUaiQ1A2MWca_qPiktKZdP6hV-1CLTXcWwK6PyE/edit}{here}.
+
+An example highlighting the semantics refactoring rule A1(a): successor statements to a
+conditional jump can be found in the next page:
+
+\pagebreak
+
+\begin{multicols}{2}
+\begin{lstlisting}[
+    language=Python,
+    caption={Code before refactoring.}
+]
+def example(cond):
+    if (cond):
+        return 0
+    return 1
+\end{lstlisting}
+
+\columnbreak
+
+\begin{lstlisting}[
+    language=Python,
+    caption={Code after refactoring.}
+]
+def example(cond):
+    if (cond):
+        return 0
+    else:
+        return 1
+\end{lstlisting}
+\end{multicols}
+
+\section{Codex and APR in CS-1 Assignments}
+
+\subsection{Preliminary Investigation}
+
+\subsection{Investigation Alternatives}
