@@ -302,3 +302,6 @@ $RECYCLE.BIN/
 # And the report.pdf as well
 archive/*
 report.pdf
+
+# PyCharm hidden files
+.idea
