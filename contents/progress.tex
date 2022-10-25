@@ -10,8 +10,8 @@ which has been developed in Java.
 
 The high-level design of the subcomponent responsible for this (aptly named \texttt{its-refactoring})
 involves each refactoring rule (implemented as a Java sub-class of the \texttt{RefactoringRule} interface)
-taking in a program in the form of the ITS' version of an abstract syntax tree, and return the refactored
-program as output, provided refactoring can be done.
+taking in a program in the form of the ITS' version of an abstract syntax tree, and returning the
+refactored program as output, provided refactoring can be done.
 
 A summary of the rules and their respective implementing Java classes can be found
 \href{https://docs.google.com/document/d/1MnEVEUaiQ1A2MWca_qPiktKZdP6hV-1CLTXcWwK6PyE/edit}{here}.
@@ -24,7 +24,7 @@ conditional jump can be found in the next page:
 \begin{multicols}{2}
 \begin{lstlisting}[
     language=Python,
-    caption={Code before refactoring.}
+    caption={Code \textbf{before} refactoring.}
 ]
 def example(cond):
     if (cond):
@@ -36,7 +36,7 @@ def example(cond):
 
 \begin{lstlisting}[
     language=Python,
-    caption={Code after refactoring.}
+    caption={Code \textbf{after} refactoring.}
 ]
 def example(cond):
     if (cond):
@@ -48,6 +48,136 @@ def example(cond):
 
 \section{Codex and APR in CS-1 Assignments}
 
+Codex-e has been shown to give the best results among APR strategies, including TBar and Recorder
+~\cite{fan2022improving}.
+We have thus decided to investigate more into the utility of
+\href{https://openai.com/blog/openai-codex/}{this APR tool},
+and specifically on whether or not we can leverage it in our use case, which would be the repair
+of student submissions for CS-1 assignments.
+
 \subsection{Preliminary Investigation}
 
-\subsection{Investigation Alternatives}
+Codex-e, like existing APR tools, typically follow a framework involving alignment and repair.
+They first search for a structure and variable alignment relation between the incorrect solution
+and reference solution and find patches that make each aligned variable have the same semantic
+behaviour in both fixed and reference solutions.
+
+\pagebreak
+
+\begin{multicols}{2}
+\begin{lstlisting}[
+    language=Python,
+    caption={Incorrect solution.}
+]
+def compute_area(a, b, c):
+    sum = (a + b + c)
+    s = sum / 0.5
+    s = s*(s-a)*(s-b)*(s-c)
+    return Math.sqrt(s)
+\end{lstlisting}
+
+\columnbreak
+
+\begin{lstlisting}[
+    language=Python,
+    caption={Correct solution.}
+]
+def compute_area(a, b, c):
+    s = (a + b + c)
+    return Math.sqrt(s*(s-a
+        )*(s-b)*(s-c))
+\end{lstlisting}
+\end{multicols}
+
+We realise the following challenges to consider:
+\begin{itemize}
+    \item How do we ensure the semantic correctness of reference solution during the program
+          transformation of the language model?
+    \item Can we perform such program transformations without any transformation examples?
+          If not, how should examples be leveraged?
+    \item How do we encode the "syntactic distance" information to guide the language model?
+\end{itemize}
+
+We finally arrive at a few actionable items worth investigating:
+\begin{itemize}
+    \item Can existing program transformation tools help refactor reference solutions
+          (e.g. FixMorph, SYDIT, Refazer)?
+    \item How severe the is the problem regarding inaccurate reference solutions?
+          (i.e. How many incorrect solutions are fixed with larger patches, compared
+           to minimal patches?)
+    \item How does Codex perform in fixing incorrect CS-1 solutions \textbf{without reference solutions}?
+    \item How does Codex perform in fixing incorrect CS-1 solutions \textbf{with a single reference
+          solution} (without program transformation)?
+\end{itemize}
+
+\subsection{Investigation Findings}
+
+We have developed a Python framework to investigate the efficacy and accuracy of using Codex in
+CS-1 assignments.
+Through this framework, we have made significant progress in addressing our actionable items regarding
+fixing incorrect CS-1 solutions (with and without a reference solution), as well as in tackling our
+challenge regarding encoding the "syntactic distance" to hopefully better guide the language model.
+
+\subsubsection{Generating code patches for incorrect student submissions}
+
+Given a single reference solution and incorrect solution, our framework is able to generate a patch
+solution using the Codex \texttt{edit} API. We are also able to run this patching using multiple
+parameters allowed by the API, including \texttt{n} (number of patches per submission) and
+\texttt{temperature}.
+For our preliminary analyses, we have used the parameters \texttt{n = 1, 2, 5} and
+\texttt{temperature = 0.8}.
+
+Upon the generation of the patches for each student submission, we are also able to analyse the
+semantic correctness of each patch solution, by subjecting it to the test suite of its corresponding
+problem.
+We use the following metrics for analysis:
+\begin{itemize}
+    \item \texttt{pass@k}.
+    \item Pass rate of all submissions for each problem.
+          For this metric, we say that a submission is considered "passed" as long as any of its
+          patches manage to pass all the test cases to which it is subjected.
+\end{itemize}
+
+The following figure shows the results of our findings with our specified parameters:
+
+\textit{INSERT FIGURE HERE}
+
+\subsubsection{Generating code completions given a problem description}
+
+Our framework is also able to generate a variable number of completion solutions, given a natural
+language prompt in the form of a problem description (see Appendix A for examples).
+Similar to above, we are able to vary \texttt{n} (number of completions per problem]) and
+\texttt{temperature}.
+For our preliminary analyses, we have used the parameters \texttt{n = 5} and
+\texttt{temperature = 0.8}.
+
+% TODO results?
+
+\subsubsection{Devising a heuristic for measuring "syntactic distance" between two solutions}
+
+Finally, we have managed to design a heuristic to compute the "syntactic distance" between two solutions
+written in C.
+As of now, we are only able to perform this heuristic on a pair of reference solution and its corresponding
+(generated) patch solution.
+Moreover, we only perform this heuristic if the patch solution can be compiled and is tested to be
+semantically correct.
+Analysing an incorrect patch solution in this step is simply meaningless and/or impossible.
+
+The execution flow of this heuristic is as follows:
+\begin{enumerate}
+    \item We first parse each solution, written in C, using
+          \href{https://github.com/eliben/pycparser}{pycparser, a third-party library written in Python
+                to parse C code}.
+    \item We then obtain each parsed solution as a custom \texttt{c\_ast.Node} object.
+    \item For each \texttt{c\_ast.Node} object, we convert it into a \texttt{zss.Node} object.
+          This is a necessary step as:
+    \begin{itemize}
+        \item It allows the converted object to now be processed in the final step of our heuristic.
+        \item Each object will be assigned its corresponding label, which we use as the main source
+              of "syntactic difference" across code solutions. (i.e. nodes with different labels
+              will be considered to have a "syntactic distance" of \texttt{1})
+    \end{itemize}
+    \item Finally, to obtain the distance, we perform the algorithm to do so, designed by
+          Zhang and Shasha~\cite{zhang1989simple}, and whose example implementations can be found
+          \href{https://pythonhosted.org/zss/#module-zss}{here}.
+\end{enumerate}
