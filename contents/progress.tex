@@ -138,9 +138,14 @@ We use the following metrics for analysis:
           patches manage to pass all the test cases to which it is subjected.
 \end{itemize}
 
-The following figure shows the results of our findings with our specified parameters:
+Table~\ref{table:pass-rate-example} shows the results of our findings with the following
+parameters: \texttt{n = 5}, \texttt{temperature = 0.8}, \texttt{filtered\_lab\_id = Lab-3}:
 
-\textit{INSERT FIGURE HERE}
+\begin{table}[h]
+\centering
+\input{tables/pass-rate-example}
+\label{table:pass-rate-example}
+\end{table}
 
 \subsubsection{Generating code completions given a problem description}
 
@@ -150,8 +155,6 @@ Similar to above, we are able to vary \texttt{n} (number of completions per prob
 \texttt{temperature}.
 For our preliminary analyses, we have used the parameters \texttt{n = 5} and
 \texttt{temperature = 0.8}.
-
-% TODO results?
 
 \subsubsection{Devising a heuristic for measuring "syntactic distance" between two solutions}
 
