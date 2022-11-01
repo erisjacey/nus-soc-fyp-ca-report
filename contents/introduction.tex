@@ -3,7 +3,7 @@
 
 \section{Background}
 
-\subsubsection{Automated Program Repair (APR)}
+\subsection{Automated Program Repair (APR)}
 
 APR can be described as a suite of technologies whose main aim is to automatically
 fix errors or vulnerabilities in software systems~\cite{le2021automatic}.
@@ -22,7 +22,7 @@ four of which include:
     \item Self-healing of performance bottlenecks
 \end{enumerate}
 
-\subsubsection{Intelligent Tutoring System (ITS)}
+\subsection{Intelligent Tutoring System (ITS)}
 
 In this project, we are interested in APR's utility in the use case of intelligent tutoring,
 specifically for students taking CS-1 programming classes.
@@ -40,7 +40,7 @@ to improve its performance.
 Two such areas include the use of refactoring to increase match rate between reference
 solution and incorrect solution, as well as the use of large language models such as Codex.
 
-\subsubsection{The Role of Refactoring in APR}
+\subsection{The Role of Refactoring in APR}
 
 Refactoring-based program repair is one possible way to employ APR in programming
 assignments~\cite{hu2019re}.
@@ -53,12 +53,12 @@ from the executions of the corect program's aligned basic blocks.
 We finally use these specifications to patch the blocks of the incorrect program through
 search-based synthesis.
 
-\subsubsection{Codex}
+\subsection{Codex}
 \label{background:codex}
 
 Codex-e has been shown to give the best results among APR strategies, including TBar and Recorder
 \cite{fan2022improving}.
-Codex-e, like existing APR tools, typically follow a framework involving alignment and repair.
+Codex-e, like existing APR tools, typically follows a framework involving alignment and repair.
 They first search for a structure and variable alignment relation between the incorrect solution
 and reference solution, and then find patches that make each aligned variable have the same
 semantic behaviour in both fixed and reference solutions.
@@ -129,7 +129,8 @@ and a correct reference solution (Listing~\ref{lst:codex:reference-sol}).
 The ideal fix to the incorrect solution would be to modify line 3, by changing the division
 operator to the multiplication operator (Listing~\ref{lst:codex:ideal-patch}).
 Structural alignment is simple because both solutions only have basic block each.
-The result of variable alignment is ${a -> a, b -> b, c -> c, s -> s, sum -> null}$.
+The result of variable alignment is $\{a \rightarrow a, b \rightarrow b, c \rightarrow c,
+s \rightarrow s, sum \rightarrow null\}$.
 During the patching process, however, such APR tools will generate a patch that:
 \begin{enumerate}
     \item Omits the variable \texttt{sum}, due to its absence in the reference solution.
@@ -146,7 +147,7 @@ reference solution into a "personalised" reference solution.
 Using large language models, this new solution will be syntactically similar to the
 incorrect solution but also conforms to the semantics of the programming assignment.
 
-\section{Project Objectives}
+\section{Project Objectives}\label{sec:project-objectives}
 
 One of the preliminary steps in the ITS framework requires the refactoring of reference correct
 solutions in the hopes of more closely matching incorrect student programs.
