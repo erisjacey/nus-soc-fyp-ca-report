@@ -1,4 +1,262 @@
-\chapter{Dataset Used}
+\chapter{Raw Data}
 The following are the programming assignments used in testing the performance of our project,
-including each problem's descriptions, as well as various (anonymous) student submissions and
-model correct solutions.
+including each problem's descriptions.
+%, as well as various (anonymous) student submissions and model correct solutions.
+
+\section{Lab 3}
+
+\subsection{Problem 2810}
+
+Write a C program to calculate the area of the triangle formed by the three points (a,b), (a,0) and (0,b), where the coordinates are float and are given by the user. The output should be in four decimal place. The exact format should be:
+\\INPUT format: a b are given in a line.
+\\OUTPUT format: For example, on the input 1 1 the output should be:
+\\The area of (1.0000,1.0000), (1.0000,0) and (0,1.0000) is 0.5000.
+
+\subsection{Problem 2811}
+
+Write a C program to calculate the intersection point of two lines. All the values are in float.
+\\INPUT: $a_1 \: b_1\: a_2\: b_2$ are given in a line. They specify the two lines $(a_1 X + b_1 Y \,=\, 1 )$ \& $(a_2 X + b_2 Y \,=\, 1 )$ .
+\\OUTPUT: If there is no intersection then print "INF" else print the intersection point up to 3 decimal places.
+\\Example 1: On input: 1 0 0 1
+\\OUTPUT: (1.000,1.000)
+\\Example 2: On input: 1 0 1 0
+\\OUTPUT: INF
+
+\subsection{Problem 2812}
+
+Write a C program to output the sign of an input float number. On input $a$ you have to output positive, zero or negative.
+\\INPUT format: a
+\\OUTPUT format: input is zero. OR a is positive/negative. Use 4 decimal places.
+\\Example 1: On input -12,
+\\OUTPUT: -12.0000 is negative.
+\\Example 2: On input 0,
+\\OUTPUT: input is zero.
+\\Example 3: On input 1,
+\\OUTPUT: 1.0000 is positive.
+
+\subsection{Problem 2813}
+
+Write a C program to calculate the intersection point of two lines. All the values are in float.
+\\INPUT: $a_1 \: b_1\: a_2\: b_2$ are given in a line. They specify the two lines $(\frac{X}{a_1} + \frac{Y}{b_1}  \,=\, 1 )$ \& $(\frac{X}{a_2} + \frac{Y}{b_2} \,=\, 1 )$ .
+\\OUTPUT: If there is no intersection then print "INF" else print the intersection point up to 3 decimal places.
+\\Example 1: On input: 1 1 1 0.5
+\\OUTPUT: (1.000,0.000)
+\\Example 2: On input: 1 0 0 1
+\\OUTPUT: (0.000,0.000)
+\\Example 3: On input: 1 0 1 0
+\\OUTPUT: INF
+
+\section{Lab 4}
+
+\subsection{Problem 2824}
+
+A year is given as input. Write a program to determine whether the year is a leap year or not. A leap year is a year which is divisible by 4 and if it is divisible by 100 then it should also be divisible by 400.
+\\Example:
+\\Input: 2004
+\\Output: Leap Year
+\\Input: 1701
+\\Output: Not Leap Year
+
+\subsection{Problem 2825}
+
+Coordinates (x, y) of the center of a circle and its radius (say r) are given as input. Another point, say (x1, y1),  is provided as input. Write a program to find out whether the point is inside the circle, on the circle, or outside the circle. Assume x, y, r, x1, y1 are of float data type.
+\\Input Format: x y r x1 y1 are separated by a single space.
+\\Example:
+\\Input:
+\\3.2 4.3 2.3 4.3 5.6
+\\Output:
+\\Point is inside the Circle.
+\\Input:
+\\1.2 2.3 2.0 5.3 7.6
+\\Output:
+\\Point is outside the Circle.
+
+\subsection{Problem 2827}
+
+Given three points (x1, y1), (x2, y2) and (x3, y3) as input. Write a program to check if all the three points fall on one straight line.
+
+Note: Assume that data type of x1, y1, x2, y2, x3 and y3 is float.
+\\Input format:
+\\x1 y1 x2 y2 x3 y3 are separated by a single space.
+\\Example:
+\\Input:
+\\1.0 0.0 2.0 0.0 3.0 0.0
+\\Output:
+\\All the points are on same line.
+\\Input:
+\\1.0 -2.0 5.2 3.0 0.0 5.0
+\\Output:
+\\All the points are not on same line.
+
+\subsection{Problem 2828}
+
+Write a C program to determine whether an input character is a capital letter, a small-case letter, or a digit. Do not use any library function, like isupper(), islower(), otherwise no marks will be awarded.
+\\Example:
+\\Input:
+\\A
+\\Output:
+\\Capital Letter
+\\Input:
+\\5
+\\Output:
+\\Digit
+\\Input:
+\\c
+\\Output:
+\\Small Letter
+
+\subsection{Problem 2830}
+
+You would be given 4 natural numbers as input. Write a program to compute and print the second largest numbers among these.
+\\Input:
+\\1 5 3 2
+\\Output:
+\\The second largest number is 3
+
+\subsection{Problem 2831}
+
+You would be given a positive integer as an input. Write a program which prints the reversed number. (Use only the C constructs that have been covered in the lectures.)
+\\Input:
+\\12345
+\\Output:
+\\Reverse of 12345 is 54321
+
+\subsection{Problem 2832}
+
+You would be given three integers as input which corresponds to the three sides of a triangle. Write a program to determine if the triangle is acute, right or obtuse. You should print "Invalid Triangle" if the side combinations do not correspond to a valid triangle.
+\\Input:
+\\3 5 4
+\\Output:
+\\Right Triangle
+
+\subsection{Problem 2833}
+
+You are given a natural number N as input. You need to calculate the number of triangles with integral sides which can be formed with side lengths less than or equal to N.
+\\Input:
+\\4
+\\Output:
+\\Number of possible triangles is 13
+
+\section{Lab 5}
+
+\subsection{Problem 2864}
+
+Given two positive integers, n1 and n2, output all the prime numbers between (and including) n1 and n2, separated by a space each.
+\\e.g.
+\\Input:
+\\11 20
+\\Output:
+\\11 13 17 19
+\\Input:
+\\3 11
+\\Output:
+\\3 5 7 11
+\\Input:
+\\4 10
+\\Output:
+\\5 7
+
+\subsection{Problem 2865}
+
+Given an integer N(N>0) as input,your program should output the following pattern,
+\\eg:
+\\Input :
+\\5
+\\Output:
+\\5432*
+\\543*1
+\\54*21
+\\5*321
+\\*4321
+\\eg:
+\\Input:
+\\2
+\\Output:
+\\2*
+\\*1
+
+\subsection{Problem 2866}
+
+Given a positive integer N, output whether N can be expressed as a sum of two prime numbers.
+\\e.g.
+\\Input: 9
+\\Output: Yes
+\\Explanation: 9 = 7 + 2
+\\Input: 11
+\\Output: No
+\\Explanation: There do not exist positive integers, x and y such that x+y=11 and x and y are prime numbers.
+
+\subsection{Problem 2867}
+
+Given an input N(N>0), your program should output the Nth tetrahedral number. To calculate the nth tetrahedral number, T(n), the formula is as following:
+\\T(n) = (1) + (1+2) + (1+2+3) + (1+2+3+4) + \ldots + (1+2+3+4+\ldots+n)
+\\Example:
+\\Input:
+\\2
+\\Output:
+\\4
+\\Input:
+\\5
+\\Output:
+\\35
+
+\subsection{Problem 2868}
+
+Given a positive integer N, count the number of unique positive integer pairs {p1,p2} such that:
+\\0<= p1 <= N
+\\0<= p2 <= N
+\\p1 + 2 = p2
+\\p1 and p2 are primes
+\\e.g.
+\\Input: 11
+\\Output: 2
+\\Explanation: There are two twin prime pairs below 11: {3,5} and {5,7}
+\\Input: 19
+\\Output: 4
+\\Explanation: There are four twin prime pairs below 19: {3,5}, {5,7}, {11,13} and {17,19}
+
+\subsection{Problem 2869}
+
+Given an integer N(N>0) as input,your program should output the following pattern:
+\\Example:
+\\Input
+\\5
+\\Output
+\\55555
+\\45555
+\\34555
+\\23455
+\\12345
+\\Input
+\\2
+\\Output
+\\22
+\\12
+
+\subsection{Problem 2870}
+
+Given a positive integer N, print the number p, such that p is the smallest prime number greater than or equal to N.
+\\e.g.
+\\Input: 11
+\\Output: 11
+\\Input: 22
+\\Output: 23
+\\Input: 1
+\\Output: 2
+
+\subsection{Problem 2871}
+
+Given an input number N(0<=N<=9), a width w and height h,respectively,generate a rectangle boundary space as shown below:
+\\Example:
+\\Input:
+\\3 4 5
+\\Output:
+\\3333
+\\3  3
+\\3  3
+\\3  3
+\\3333
+\\Input:
+\\2 2 2
+\\22
+\\22
