@@ -34,7 +34,7 @@ This project is being built on the backbone of the ITS we have been developing.
 Some features of this system include leveraging APR techniques, providing students with
 dynamic hints and feedback, as well as a robust auto-grader.
 
-While the ITS has been slowly been increasingly integrated in various introductory
+While the ITS has slowly been increasingly integrated in various introductory
 programming courses (such as CS1010 Programming Methodology), much work can still be done
 to improve its performance.
 Two such areas include the use of refactoring to increase match rate between reference
@@ -57,16 +57,17 @@ search-based synthesis.
 \label{background:codex}
 
 Codex-e has been shown to give the best results among APR strategies, including TBar and Recorder
-~\cite{fan2022improving}.
+\cite{fan2022improving}.
 Codex-e, like existing APR tools, typically follow a framework involving alignment and repair.
 They first search for a structure and variable alignment relation between the incorrect solution
-and reference solution and find patches that make each aligned variable have the same semantic
-behaviour in both fixed and reference solutions.
+and reference solution, and then find patches that make each aligned variable have the same
+semantic behaviour in both fixed and reference solutions.
 
 \begin{multicols}{2}
 \begin{lstlisting}[
     language=Python,
-    caption={Incorrect solution.}
+    caption={Incorrect solution.},
+    label={lst:codex:incorrect-sol}
 ]
 def compute_area(a, b, c):
     sum = (a + b + c)
@@ -79,7 +80,8 @@ def compute_area(a, b, c):
 
 \begin{lstlisting}[
     language=Python,
-    caption={Correct solution.}
+    caption={Reference solution.},
+    label={lst:codex:reference-sol}
 ]
 def compute_area(a, b, c):
     s = (a + b + c)
@@ -87,6 +89,83 @@ def compute_area(a, b, c):
         )*(s-b)*(s-c))
 \end{lstlisting}
 \end{multicols}
+
+\begin{multicols}{2}
+\begin{lstlisting}[
+    language=Python,
+    caption={Correct patch.},
+    label={lst:codex:correct-patch}
+]
+def compute_area(a, b, c):
+-   sum = (a + b + c)
+-   s = sum / 0.5
+-   s = s*(s-a)*(s-b)*(s-c)
+-   return Math.sqrt(s)
++   s = (a + b + c)
++   return Math.sqrt(s*(s-a
++       )*(s-b)*(s-c))
+\end{lstlisting}
+
+\columnbreak
+
+\begin{lstlisting}[
+    language=Python,
+    caption={Ideal patch.},
+    label={lst:codex:ideal-patch}
+]
+def compute_area(a, b, c):
+    sum = (a + b + c)
+-   s = sum / 0.5
++   s = sum * 0.5
+    s = s*(s-a)*(s-b)*(s-c)
+    return Math.sqrt(s)
+\end{lstlisting}
+\end{multicols}
+
+Consider the example above, where the problem entails computing the area of a triangle.
+
+Existing APR tools would take in an incorrect solution (Listing~\ref{lst:codex:incorrect-sol})
+and a correct reference solution (Listing~\ref{lst:codex:reference-sol}).
+The ideal fix to the incorrect solution would be to modify line 3, by changing the division
+operator to the multiplication operator (Listing~\ref{lst:codex:ideal-patch}).
+Structural alignment is simple because both solutions only have basic block each.
+The result of variable alignment is ${a -> a, b -> b, c -> c, s -> s, sum -> null}$.
+During the patching process, however, such APR tools will generate a patch that:
+\begin{enumerate}
+    \item Omits the variable \texttt{sum}, due to its absence in the reference solution.
+    \item Replaces expressions involving the variable \texttt{s} with the reference
+          solution, due to a mismatch in the semantic behaviour of \texttt{s}.
+    \item Replaces expressions of \texttt{return}, due to variable \texttt{s} being
+          changed.
+\end{enumerate}
+
+We notice that the correct patch generated (Listing~\ref{lst:codex:correct-patch}) may
+not be as effective as the ideal patch for learning students.
+It might be prudent for us to instead provide personalised feedback by transforming a
+reference solution into a "personalised" reference solution.
+Using large language models, this new solution will be syntactically similar to the
+incorrect solution but also conforms to the semantics of the programming assignment.
+
+\section{Project Objectives}
+
+One of the preliminary steps in the ITS framework requires the refactoring of reference correct
+solutions in the hopes of more closely matching incorrect student programs.
+As such, the first part of this project involves the implementation of refactoring rules as
+outlined by an APR-centered paper~\cite{hu2019re}.
+These rules, implemented in the ITS backend, are intended to improve the robustness of the
+application.
+The ITS will be able to increase the likelihood of finding a match between a given incorrect
+student solution and reference correct solution to be able to kickstart the repair process.
+
+Subsequently, the second part revolves around investigating large language models (LLMs),
+specifically Codex, and their efficacy in the APR process for CS-1 programming assignments.
+More precisely, we aim to develop a specialised APR process that minimises the "syntactic
+distance" between incorrect and reference solutions while preserving the semantic
+correctness of the reference solution.
+
+Through this research portion of the project, we aim to make use of Codex in the most
+effective way possible for our use case, which is to increase the efficiency of both
+teachers' grading performance and students' learning ease.
 
 We realise the following challenges to consider:
 \begin{itemize}
@@ -108,23 +187,6 @@ We finally arrive at a few actionable items worth investigating:
     \item How does Codex perform in fixing incorrect CS-1 solutions \textbf{with a single reference
           solution} (without program transformation)?
 \end{itemize}
-
-\section{Project Objectives}
-
-One of the preliminary steps in the ITS framework requires the refactoring of reference correct
-solutions in the hopes of more closely matching incorrect student programs.
-As such, the first part of this project involves the implementation of refactoring rules as
-outlined by an APR-centered paper~\cite{hu2019re}.
-These rules, implemented in the ITS backend, are intended to improve the robustness of the
-application.
-The ITS will be able to increase the likelihood of finding a match between a given incorrect
-student solution and reference correct solution to be able to kickstart the repair process.
-
-Subsequently, the second part revolves around investigating large language models (LLMs),
-specifically Codex, and their efficacy in the APR process for CS-1 programming assignments.
-Through this research portion of the project, we aim to make use of Codex in the most
-effective way possible for our use case, which is to increase the efficiency of both
-teachers' grading performance and students' learning ease.
 
 % TEMPLATE BELOW %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
