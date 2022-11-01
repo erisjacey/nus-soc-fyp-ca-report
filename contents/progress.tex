@@ -1,5 +1,5 @@
 \chapter{Progress Made So Far}
-We have made significant progress in the two areas mentioned in Chapter 1 (Introduction).
+We have made significant progress in the two areas mentioned in Chapter~\ref{introduction}.
 
 \section{Implementation of Refactoring Rules}
 
@@ -48,67 +48,12 @@ def example(cond):
 
 \section{Codex and APR in CS-1 Assignments}
 
-Codex-e has been shown to give the best results among APR strategies, including TBar and Recorder
-~\cite{fan2022improving}.
+As mentioned in Section~\ref{background:codex}, we have found Codex to be one of the better
+APR strategies to employ.
 We have thus decided to investigate more into the utility of
 \href{https://openai.com/blog/openai-codex/}{this APR tool},
 and specifically on whether or not we can leverage it in our use case, which would be the repair
 of student submissions for CS-1 assignments.
-
-\subsection{Preliminary Investigation}
-
-Codex-e, like existing APR tools, typically follow a framework involving alignment and repair.
-They first search for a structure and variable alignment relation between the incorrect solution
-and reference solution and find patches that make each aligned variable have the same semantic
-behaviour in both fixed and reference solutions.
-
-\pagebreak
-
-\begin{multicols}{2}
-\begin{lstlisting}[
-    language=Python,
-    caption={Incorrect solution.}
-]
-def compute_area(a, b, c):
-    sum = (a + b + c)
-    s = sum / 0.5
-    s = s*(s-a)*(s-b)*(s-c)
-    return Math.sqrt(s)
-\end{lstlisting}
-
-\columnbreak
-
-\begin{lstlisting}[
-    language=Python,
-    caption={Correct solution.}
-]
-def compute_area(a, b, c):
-    s = (a + b + c)
-    return Math.sqrt(s*(s-a
-        )*(s-b)*(s-c))
-\end{lstlisting}
-\end{multicols}
-
-We realise the following challenges to consider:
-\begin{itemize}
-    \item How do we ensure the semantic correctness of reference solution during the program
-          transformation of the language model?
-    \item Can we perform such program transformations without any transformation examples?
-          If not, how should examples be leveraged?
-    \item How do we encode the "syntactic distance" information to guide the language model?
-\end{itemize}
-
-We finally arrive at a few actionable items worth investigating:
-\begin{itemize}
-    \item Can existing program transformation tools help refactor reference solutions
-          (e.g. FixMorph, SYDIT, Refazer)?
-    \item How severe the is the problem regarding inaccurate reference solutions?
-          (i.e. How many incorrect solutions are fixed with larger patches, compared
-           to minimal patches?)
-    \item How does Codex perform in fixing incorrect CS-1 solutions \textbf{without reference solutions}?
-    \item How does Codex perform in fixing incorrect CS-1 solutions \textbf{with a single reference
-          solution} (without program transformation)?
-\end{itemize}
 
 \subsection{Investigation Findings}
 

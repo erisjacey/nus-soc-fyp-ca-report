@@ -1,18 +1,113 @@
 \chapter{Introduction}
-
-This project is being built on the backbone of the ITS we have been developing.
-Some features of this system include providing an automated approach to APR,
-providing students with tailored and dynamic feedback, as well as a robust auto-grader.
+\label{introduction}
 
 \section{Background}
 
 \subsubsection{Automated Program Repair (APR)}
 
-INSERT TEXT HERE
+APR can be described as a suite of technologies whose main aim is to automatically
+fix errors or vulnerabilities in software systems~\cite{le2021automatic}.
+It hones in on a class of techniques that, at its core, takes a program as input
+along with information about its error (e.g. failing tests).
+It then produces a patch at the code-level for that program's source to fix its
+errors, ideally while maintaining its other correct processes.
+
+At its present, APR has a myraid of practical use cases~\cite{goues2019automated},
+four of which include:
+
+\begin{enumerate}
+    \item Fixing bugs throughout development
+    \item Repairing security vulnerabilities
+    \item Intelligent tutoring
+    \item Self-healing of performance bottlenecks
+\end{enumerate}
 
 \subsubsection{Intelligent Tutoring System (ITS)}
 
-INSERT TEXT HERE
+In this project, we are interested in APR's utility in the use case of intelligent tutoring,
+specifically for students taking CS-1 programming classes.
+The high level idea of APR in this context involves taking in a buggy student submission
+and a correct reference solution as inputs, then producing a fixed version of the student's
+program as output.
+
+This project is being built on the backbone of the ITS we have been developing.
+Some features of this system include leveraging APR techniques, providing students with
+dynamic hints and feedback, as well as a robust auto-grader.
+
+While the ITS has been slowly been increasingly integrated in various introductory
+programming courses (such as CS1010 Programming Methodology), much work can still be done
+to improve its performance.
+Two such areas include the use of refactoring to increase match rate between reference
+solution and incorrect solution, as well as the use of large language models such as Codex.
+
+\subsubsection{The Role of Refactoring in APR}
+
+Refactoring-based program repair is one possible way to employ APR in programming
+assignments~\cite{hu2019re}.
+The first step to this approach involves refactoring all available correct solutions to
+semantically equivalent solutions.
+We then match a given incorrect program with the refactored program with the closest match
+based on its control flow structure.
+Next, we infer the input-output specification of the incorrect program's basic blocks
+from the executions of the corect program's aligned basic blocks.
+We finally use these specifications to patch the blocks of the incorrect program through
+search-based synthesis.
+
+\subsubsection{Codex}
+\label{background:codex}
+
+Codex-e has been shown to give the best results among APR strategies, including TBar and Recorder
+~\cite{fan2022improving}.
+Codex-e, like existing APR tools, typically follow a framework involving alignment and repair.
+They first search for a structure and variable alignment relation between the incorrect solution
+and reference solution and find patches that make each aligned variable have the same semantic
+behaviour in both fixed and reference solutions.
+
+\begin{multicols}{2}
+\begin{lstlisting}[
+    language=Python,
+    caption={Incorrect solution.}
+]
+def compute_area(a, b, c):
+    sum = (a + b + c)
+    s = sum / 0.5
+    s = s*(s-a)*(s-b)*(s-c)
+    return Math.sqrt(s)
+\end{lstlisting}
+
+\columnbreak
+
+\begin{lstlisting}[
+    language=Python,
+    caption={Correct solution.}
+]
+def compute_area(a, b, c):
+    s = (a + b + c)
+    return Math.sqrt(s*(s-a
+        )*(s-b)*(s-c))
+\end{lstlisting}
+\end{multicols}
+
+We realise the following challenges to consider:
+\begin{itemize}
+    \item How do we ensure the semantic correctness of reference solution during the program
+          transformation of the language model?
+    \item Can we perform such program transformations without any transformation examples?
+          If not, how should examples be leveraged?
+    \item How do we encode the "syntactic distance" information to guide the language model?
+\end{itemize}
+
+We finally arrive at a few actionable items worth investigating:
+\begin{itemize}
+    \item Can existing program transformation tools help refactor reference solutions
+          (e.g. FixMorph, SYDIT, Refazer)?
+    \item How severe the is the problem regarding inaccurate reference solutions?
+          (i.e. How many incorrect solutions are fixed with larger patches, compared
+           to minimal patches?)
+    \item How does Codex perform in fixing incorrect CS-1 solutions \textbf{without reference solutions}?
+    \item How does Codex perform in fixing incorrect CS-1 solutions \textbf{with a single reference
+          solution} (without program transformation)?
+\end{itemize}
 
 \section{Project Objectives}
 
@@ -22,7 +117,8 @@ As such, the first part of this project involves the implementation of refactori
 outlined by an APR-centered paper~\cite{hu2019re}.
 These rules, implemented in the ITS backend, are intended to improve the robustness of the
 application.
-It will be able to [INSERT GOAL HERE].
+The ITS will be able to increase the likelihood of finding a match between a given incorrect
+student solution and reference correct solution to be able to kickstart the repair process.
 
 Subsequently, the second part revolves around investigating large language models (LLMs),
 specifically Codex, and their efficacy in the APR process for CS-1 programming assignments.
